@@ -179,10 +179,28 @@ void unlzss(std::vector<uint8_t>& data)
 	data = std::move(output);
 }
 
+void usage_and_exit(int code = 0)
+{
+	std::cout <<
+		"Usage: <me> <input-file> [output-dir]\n";
+	exit(code);
+}
+
 int main(int argc, const char** argv)
 {
-	const std::string filename = "ui.bin";
-	const fs::path outpath = "ui_";
+	if (argc < 2 || argc > 4)
+		usage_and_exit();
+	fs::path filename = argv[1];
+	fs::path outpath;
+	if (argc == 2)
+	{
+		outpath = filename;
+		outpath.replace_extension();
+	}
+	else outpath = argv[2];
+	
+	//const std::string filename = "ui.bin";
+	//const fs::path outpath = "ui_";
 	
 	std::ifstream fin(filename, std::ios::binary);
 	if (!fin.is_open())
