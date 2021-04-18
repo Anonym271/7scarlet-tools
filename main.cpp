@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <filesystem>
+#include <cstring>
 
 #ifdef __GNUC__
 uint32_t swap_endian_cpy(uint32_t x) { return __builtin_bswap32(x); }
@@ -92,7 +93,6 @@ template<typename T>
 void readn(std::istream& f, std::vector<T>& v)
 {
 	f.read((char*)v.data(), sizeof(T) * v.size());
-	return v;
 }
 
 void unlzss(std::vector<uint8_t>& data)
@@ -148,13 +148,12 @@ void unlzss(std::vector<uint8_t>& data)
 			control = *in_pos++;
 			control <<= 8;
 			control |= *in_pos++;
-			//control = *(uint16_t*)in_pos;
+
 			length = (control & 0x3F) + 3;
 			offset = (control >> 6) & 0x3FF;
 
 			std::memcpy(out_pos, out_pos - offset - 1, length);
 			out_pos += length;
-			//in_pos += 2;
 			break;
 		case 3: // 3 control bytes
 			control = *in_pos++;
@@ -198,9 +197,6 @@ int main(int argc, const char** argv)
 		outpath.replace_extension();
 	}
 	else outpath = argv[2];
-	
-	//const std::string filename = "ui.bin";
-	//const fs::path outpath = "ui_";
 	
 	std::ifstream fin(filename, std::ios::binary);
 	if (!fin.is_open())
@@ -247,6 +243,10 @@ int main(int argc, const char** argv)
 		catch (const std::ios::failure& fail)
 		{
 			std::cerr << "IO Error: " << fail.what() << "\nCould not extract file " << fname << ".\n";
+		}
+		catch (const std::exception& exc)
+		{
+			std::cerr << "Error: " << exc.what() << "\nCould not extract file " << fname << ".\n";
 		}
 	}
 	
