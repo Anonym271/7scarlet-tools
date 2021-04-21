@@ -9,6 +9,11 @@ void swap_endian(uint64_t& x);
 
 namespace fs = std::filesystem;
 
+struct {
+	bool lzss;
+	bool verbose;
+} program_options;
+
 template<typename T>
 T read(std::istream& f)
 {

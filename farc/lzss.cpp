@@ -46,7 +46,7 @@ void lzss::decompress(std::vector<uint8_t>& data)
 			flags = *in_pos++;
 		}
 		flag = flags & 0b11;
-		size_t in_offs = in_pos - in_start;
+		//size_t in_offs = in_pos - in_start;
 
 		switch (flag)
 		{

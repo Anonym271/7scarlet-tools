@@ -1,0 +1,103 @@
+101: "I-I made it..."
+106: "Oh no...!"
+109: "M-Money..."
+112: "What should I...?"
+117: "Do you want to make a call?"
+125: "They say you need money to cross the River Styx.@@But it seems that you don't have any."
+129: "...Urgh.@@Please，let me go--"
+134: "Are you going to beg for your life?@@Don't make me laugh.@@Sorry，but you don't have the right to beg. No--"
+137: "You don't even have a life for which to beg."
+140: "......"
+144: "Don't think badly of me..."
+176: Where is this...?
+179: My field of vision is fading in and out.@@I have to wake up...
+182: I don't have any strength.@@The heavy scent wafting in the air holds me down.
+186: A field of purple.@@I wonder what the origin of the word purple is...@@That trivial thought dominates my consciousness.
+190: A distant memory.@@I know it so well，but I can't remember it.@@My vision wavers，and I slowly dissolve.
+192: Forever and ever，in a swirl of purple...
+209: "Ow!"
+212: "What are you doing，spacing out here?"
+220: I feel pain，and find myself in the cafeteria.
+224: "You were like a lifeless doll@@until I poked you in the forehead，you know?"
+233: He says，grinning.@@It's a kind，considerate smile.
+238: The one who brought me out of my daydream is@@Hino Kagutsuchi，my classmate.
+242: He was transferred to my elementary school.@@We went to the same middle and high school，too.@@Sometimes we were in the same class，but not always.
+245: We go to the same college now，too.@@However，it's pure coincidence.
+248: "Are you alone?"
+258: Hino pulls out a chair without waiting for my reply，@@and plops himself down on it.
+265: "My friends invited me，but I turned them down."
+272: "I see. Well，that's rude."
+279: "You don't even hear what people say@@when you space out like that，do you?"
+284: Hearing that，I look around.
+306: ...A girl talking about the new cafe nearby.@@A boy groaning about an essay he hasn't finished.@@The tumult of the cafeteria becomes clearer.
+309: My daydreams always come suddenly，@@pulling me away from reality.
+312: My friends know about my habit of spacing out，@@so it doesn't phase them at all.
+315: Once，when I woke from a dream，@@Hino's face was right in front of mine...
+323: "Hey，%first?@@You awake?"
+327: "Hey，you awake?"
+334: "...Geez，there you go，spacing out again.@@Are you that fascinated with my face?"
+344: "N-No!"
+352: "Well，whatever.@@What，you're eating fish again?@@Eat meat once in a while. It'll give you stamina."
+360: "Fish is better for you.@@Plus，it has fewer calories."
+367: "I have my club after this.@@I won't make it to supper without enough calories."
+373: "You're still playing soccer，huh?"
+380: "It's futsal. Well，I guess they seem@@pretty similar to an amateur like you."
+386: "It suits you perfectly，Hino."
+393: "What's that supposed to mean?@@Aren't all sports basically the same to you?"
+399: "Well... it looks like you cheered up a bit."
+405: "Oh... Yeah，thanks."
+410: I know he's being considerate of me.
+416: It's been almost a year since my older brother@@disappeared. The seasons have come and gone.
+418: I'm a lot calmer now than I was before，but...
+423: Whenever I think about it，@@a grey fog still clouds my heart.@@Hino senses that，and he's always worrying about me.
+430: "I heard they closed the investigation."
+447: "Would you like to try going there?@@To Okunezato?"
+450: Okunezato.@@When I hear that name，my heart starts pounding.
+459: Okunezato is a small country town in the mountains.
+463: A year ago，my brother wandered into that quiet town@@surrounded by mountains and rivers，@@and a few days later，he went missing.
+466: It seems people occasionally go missing while@@climbing the steep mountains around the town.
+469: The police decided my brother must have@@had an accident，like so many before him.
+472: My brother vanished，as if melting into@@the vast dead-end street that is Okunezato.
+481: "Actually，I'd like to go there.@@Which is to say，I made plans to go there."
+487: "What do you mean?"
+497: "The Okunezato Supernatural Club@@is having an offline meeting in town."
+500: The Okunezato Supernatural Club is a website that@@explains the rumors and mysteries of Okunezato.
+505: Some of Okunezato's accidents go unexplained，@@so the place is well known by a subset@@of mystery fans，who post comments on the website.
+508: I only know about that website@@because of my brother.
+511: I occasionally found him researching it@@on his computer.
+513: My heart skips a beat again.
+520: "The owner of the site decided to hold a meeting；@@I guess it's their first one ever."
+528: "Well，it's not like there's really any need@@for them to meet regularly."
+536: "So，do you want to come with me?@@It might be more meaningful than@@getting lost in thought all by yourself."
+542: "......"
+549: "No... I'm kind of scared.@@You go by yourself，Hino."
+557: "Hey，are you really okay with that?@@You might not ever get another@@chance like this，you know?"
+564: "That's true.@@But it's so sudden... I'm not ready."
+567: "But Hino，why--?"
+573: "Hm?"
+579: "Why are you being so nice to me?"
+588: "Why?"
+597: "W-Well... No particular reason.@@It's not like I'm doing it just for you."
+605: "I mean，I invited you along because@@I want to help you look for your brother，@@but... that's not my only reason..."
+608: "It's not?"
+613: "No. I mean，I hear the air is nice out there.@@And we could，like，take a nature walk，@@eat together，watch fireworks at night..."
+620: "And do，um，other summer vacation-type stuff...@@I mean，there's probably a ton of things to do!"
+627: "A ton of summer vacation-type stuff...@@It sounds like you just want to go there to goof off."
+637: "Hey，what's with the snide remark?@@Here I am，trying to--"
+672: "...Whatever. So，what do you want to do?@@You really don't want to come?"
+678: I avert my eyes.@@To be honest，I'm a little scared.
+681: But Hino's bubbly personality is cheering me up.@@And more than anything else...
+684: I want to see what my beloved brother saw@@with my own two eyes.
+699: The buzz of the cafeteria fades from my ears.@@In the silence，I hear only the song of the cicadas.
+726: I can't stop my heart from pounding.@@But it stirs me，like some gravitational force.
+734: "Hey，you okay? You're spacing out again.@@Here，you want something to drink?"
+737: Hino offers me a sports drink in a plastic bottle.@@I take it and drain it in one gulp.
+741: If I go to Okunezato，I might figure out@@why my heart is pounding so much.
+744: "I want to know what happened to my brother."@@I think，as my fear retreats into the shadows.
+751: "......"
+754: "...Okay，I'll go."
+760: "Yeah?"
+764: "I found some courage.@@I think I'll go to Okunezato."
+772: "Oh，nice.@@All right，that decides it!@@I'll tell you the dates later. Go pack your stuff."
+778: "Yeah，okay."
+791: And so，the wheel of fate begins to turn.
