@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scn", "scn\scn.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tbg", "tbg\tbg.vcxproj", "{D7374CCA-5BB3-4EF6-97B4-D0317D87E87C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tbx", "tbx\tbx.vcxproj", "{EDCC7670-6F4C-4388-8157-74A80EB15447}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{D7374CCA-5BB3-4EF6-97B4-D0317D87E87C}.Release|x64.Build.0 = Release|x64
 		{D7374CCA-5BB3-4EF6-97B4-D0317D87E87C}.Release|x86.ActiveCfg = Release|Win32
 		{D7374CCA-5BB3-4EF6-97B4-D0317D87E87C}.Release|x86.Build.0 = Release|Win32
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Debug|x64.ActiveCfg = Debug|x64
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Debug|x64.Build.0 = Debug|x64
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Debug|x86.ActiveCfg = Debug|Win32
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Debug|x86.Build.0 = Debug|Win32
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Release|x64.ActiveCfg = Release|x64
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Release|x64.Build.0 = Release|x64
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Release|x86.ActiveCfg = Release|Win32
+		{EDCC7670-6F4C-4388-8157-74A80EB15447}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
