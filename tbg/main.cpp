@@ -5,6 +5,9 @@
 #include <thread>
 #include <mutex>
 #include <filesystem>
+#include <sstream>
+#include <set>
+#include <regex>
 
 #include <lodepng.h>
 
@@ -121,6 +124,17 @@ void process_args(int argc, const char** argv)
     }
 }
 
+std::string get_outname(const std::string& tbx_name, int index)
+{
+    std::stringstream ss;
+    ss << tbx_name;
+    ss << '_';
+    if (index < 10)
+        ss << '0';
+    ss << index << ".png";
+    return ss.str();
+}
+
 /* CONVERSION */
 int tbg_to_png(std::vector<uint8_t>& filedata)
 {
@@ -149,6 +163,8 @@ int tbg_to_png(std::vector<uint8_t>& filedata)
     std::vector<uint8_t> png;
     lodepng::State state;
     state.info_raw.colortype = channels == 3 ? LodePNGColorType::LCT_RGB : LodePNGColorType::LCT_RGBA;
+    state.info_png.color.colortype = state.info_raw.colortype;
+    state.encoder.auto_convert = false;
     auto err = lodepng::encode(png, data, hdr.width, hdr.height, state);
     if (err)
     {
@@ -186,8 +202,11 @@ int png_to_tbg(std::vector<uint8_t>& filedata)
         c = 4;
     else
     {
-        std::cerr << "Unsupported color type!\n";
-        return 1;
+        std::cout << "Unsupported color type, converting to RGBA...\n";
+        state.decoder.color_convert = true;
+        state.info_raw.colortype = LodePNGColorType::LCT_RGBA;
+        lodepng::decode(data, w, h, state, filedata);
+        c = 4;
     }
 
     swap_colors(data.data(), data.size(), c);
@@ -227,6 +246,12 @@ int png_to_tbg(const std::string& filename)
     return 0;
 }
 
+/* TBX */
+void repack()
+{
+
+}
+
 void extract_one(std::istream& fin, uint32_t offset, uint32_t length, std::string out_filename)
 {
     std::vector<uint8_t> buffer(length);
@@ -257,14 +282,13 @@ void thread_extract(
         }
         task = todo.front();
         todo.pop_front();
-        fname = outname + "_" + std::to_string(++universal_counter) + ".png";
+        fname = get_outname(outname, ++universal_counter);
         todo_mutex.unlock();
 
         extract_one(fin, task.offset, task.length, fname);
     }
 }
 
- /* MAIN PROGRAM */
 int extract(const std::string& name)
 {
     uint64_t fsize;
@@ -335,17 +359,18 @@ int extract(const std::string& name)
                 std::ref(fin),
                 entries[i].offset,
                 entries[i].length,
-                out_filename + "_" + std::to_string(i + 1) + ".png");
+                get_outname(out_filename, i + 1));
         extract_one(
             std::ref(fin),
             entries.back().offset,
             entries.back().length,
-            out_filename + "_" + std::to_string(entries.size()) + ".png");
+            get_outname(out_filename, hdr.file_count));
         for (auto& t : threads)
             t.join();
     }
 }
 
+/* TBP */
 int convert(const std::string& name)
 {
     std::cout << name + '\n';
@@ -385,6 +410,8 @@ void thread_convert(std::deque<std::string>& todo)
         convert(filename);
     }
 }
+
+/* MAIN PROGRAMS */
 
 int main_convert(int argc, const char** argv)
 {
@@ -429,13 +456,136 @@ int main_extract(int argc, const char** argv)
 
 int main_pack(int argc, const char** argv)
 {
+    int i = 1;
+    bool regex = false;
+    std::string arcname(argv[i]);
+    if (arcname == "-r")
+    {
+        regex = true;
+        i++;
+        arcname = argv[i];
+    }
+    size_t uspos = arcname.find_last_of('_');
+    if (uspos == -1)
+    {
+        size_t dotpos = arcname.find_last_of('.');
+        if (dotpos == -1)
+            arcname += ".tbx";
+        else arcname = arcname.substr(0, dotpos) + ".tbx";
+    }
+    else // contains underscore '_'
+        arcname = arcname.substr(0, uspos) + ".tbx"; // because files *should* be named myarc_00.png, myarc_01.png, ...
+
+    std::set<std::string> args; // to make sure they are in the right order
+    if (regex) // match file names in currend WD with given regex
+    {
+        for (; i < argc; i++)
+        {
+            std::string fn;
+            std::smatch match;
+            std::string arg(argv[i]);
+            const std::regex re(arg, std::regex_constants::ECMAScript);
+            std::cout << "Collecting files matching " << arg << std::endl;
+            for (auto& direntry : fs::directory_iterator("."))
+            {
+                fn = direntry.path().filename().string();
+                if (std::regex_match(fn, match, re))
+                {
+              //      std::cout << fn << std::endl;
+                    args.emplace(std::move(fn));
+                }
+            }
+        }
+    }
+    else
+    {
+        for (; i < argc; i++)
+            args.emplace(argv[i]);
+    }
+
+
+    TbxHeader hdr;
+    hdr.magic = TBX_MAGIC;
+    hdr.file_count = args.size();
+    hdr.table_offset = sizeof(TbxHeader);
+    hdr.data_offset = sizeof(TbxHeader) + hdr.file_count * sizeof(TbxEntry);
+
+    std::ofstream fout(arcname, std::ios::binary);
+    fout.write((char*)&hdr, sizeof(TbxHeader));
+    fout.seekp(hdr.data_offset);
+
+    std::vector<TbxEntry> entries(hdr.file_count);
+
+    size_t dotpos;
+    bool is_png;
+    std::ifstream fin;
+    std::vector<uint8_t> buffer;
+    i = 0;
+    for (auto& arg : args)
+    {
+        std::cout << arg << std::endl;
+        size_t dotpos = arg.find_last_of('.');
+        if (dotpos == -1)
+            is_png = false;
+        else
+        {
+            std::string ext(arg.substr(dotpos));
+            std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+            if (ext == ".png")
+                is_png = true;
+            else is_png = false;
+        }
+
+        if (is_png)
+        {
+            if (lodepng::load_file(buffer, arg))
+            {
+                std::cerr << "Failed to load " << arg << '\n';
+                return 1;
+            }
+            png_to_tbg(buffer);
+        }
+        else // don't convert, leave as is
+        {
+            fin.open(arg, std::ios::binary | std::ios::ate);
+            if (!fin.is_open())
+            {
+                std::cerr << "Failed to open " << arg << '\n';
+                return 1;
+            }
+            uint64_t fsize = fin.tellg();
+            if (fsize > UINT32_MAX)
+            {
+                std::cerr << "File " << arg << " is too big! (Max. total size: 4 GB)\n";
+                return 1;
+            }
+            buffer.resize(fsize);
+            fin.read((char*)buffer.data(), fsize);
+            fin.close();
+        }
+
+        entries[i].offset = fout.tellp();
+        entries[i].length = buffer.size();
+        fout.write((char*)buffer.data(), buffer.size());
+
+        i++;
+    }
+
+    fout.seekp(hdr.table_offset);
+    fout.write((char*)entries.data(), entries.size() * sizeof(TbxEntry));
 
     return 0;
 }
 
-int main(const int argc, const char** argv)
+int main(int argc, const char** argv)
 {
     process_args(argc, argv);
+
+    if (argv[1][0] == '-') // arg was used
+    {
+        argv++; // this is hacky af, i know
+        argc--;
+    }
 
     switch (_mode)
     {
