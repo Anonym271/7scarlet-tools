@@ -32,8 +32,8 @@ namespace _7sCarletSceneEditor
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnFileOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.btnFileSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnScriptExport = new System.Windows.Forms.ToolStripMenuItem();
             this.btnScriptImport = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +46,8 @@ namespace _7sCarletSceneEditor
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideUnknownInstructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabView.SuspendLayout();
             this.tabViewHex.SuspendLayout();
@@ -59,7 +61,8 @@ namespace _7sCarletSceneEditor
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.scriptsToolStripMenuItem});
+            this.scriptsToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(996, 24);
@@ -70,8 +73,8 @@ namespace _7sCarletSceneEditor
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnFileOpen,
-            this.btnFileSaveAs,
-            this.btnFileSave});
+            this.btnFileSave,
+            this.btnFileSaveAs});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -83,17 +86,19 @@ namespace _7sCarletSceneEditor
             this.btnFileOpen.Text = "Open...";
             this.btnFileOpen.Click += new System.EventHandler(this.btnFileOpen_Click);
             // 
-            // btnFileSaveAs
-            // 
-            this.btnFileSaveAs.Name = "btnFileSaveAs";
-            this.btnFileSaveAs.Size = new System.Drawing.Size(121, 22);
-            this.btnFileSaveAs.Text = "Save as...";
-            // 
             // btnFileSave
             // 
             this.btnFileSave.Name = "btnFileSave";
             this.btnFileSave.Size = new System.Drawing.Size(121, 22);
             this.btnFileSave.Text = "Save";
+            this.btnFileSave.Click += new System.EventHandler(this.btnFileSave_Click);
+            // 
+            // btnFileSaveAs
+            // 
+            this.btnFileSaveAs.Name = "btnFileSaveAs";
+            this.btnFileSaveAs.Size = new System.Drawing.Size(121, 22);
+            this.btnFileSaveAs.Text = "Save as...";
+            this.btnFileSaveAs.Click += new System.EventHandler(this.btnFileSaveAs_Click);
             // 
             // scriptsToolStripMenuItem
             // 
@@ -101,20 +106,22 @@ namespace _7sCarletSceneEditor
             this.btnScriptExport,
             this.btnScriptImport});
             this.scriptsToolStripMenuItem.Name = "scriptsToolStripMenuItem";
-            this.scriptsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.scriptsToolStripMenuItem.Text = "Scripts";
+            this.scriptsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.scriptsToolStripMenuItem.Text = "Dialogs";
             // 
             // btnScriptExport
             // 
             this.btnScriptExport.Name = "btnScriptExport";
-            this.btnScriptExport.Size = new System.Drawing.Size(119, 22);
+            this.btnScriptExport.Size = new System.Drawing.Size(196, 22);
             this.btnScriptExport.Text = "Export...";
+            this.btnScriptExport.Click += new System.EventHandler(this.btnScriptExport_Click);
             // 
             // btnScriptImport
             // 
             this.btnScriptImport.Name = "btnScriptImport";
-            this.btnScriptImport.Size = new System.Drawing.Size(119, 22);
+            this.btnScriptImport.Size = new System.Drawing.Size(196, 22);
             this.btnScriptImport.Text = "Import...";
+            this.btnScriptImport.Click += new System.EventHandler(this.btnScriptImport_Click);
             // 
             // hexBox
             // 
@@ -216,6 +223,21 @@ namespace _7sCarletSceneEditor
             this.splitContainer.TabIndex = 5;
             this.splitContainer.TabStop = false;
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hideUnknownInstructionsToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // hideUnknownInstructionsToolStripMenuItem
+            // 
+            this.hideUnknownInstructionsToolStripMenuItem.Name = "hideUnknownInstructionsToolStripMenuItem";
+            this.hideUnknownInstructionsToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.hideUnknownInstructionsToolStripMenuItem.Text = "Hide Unknown Instructions";
+            this.hideUnknownInstructionsToolStripMenuItem.Click += new System.EventHandler(this.hideUnknownInstructionsToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -223,10 +245,13 @@ namespace _7sCarletSceneEditor
             this.ClientSize = new System.Drawing.Size(996, 595);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(280, 130);
             this.Name = "MainWindow";
             this.Text = "Scene Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabView.ResumeLayout(false);
@@ -259,6 +284,8 @@ namespace _7sCarletSceneEditor
         private System.Windows.Forms.ColumnHeader columnHeaderName;
         private System.Windows.Forms.ColumnHeader columnHeaderType;
         private System.Windows.Forms.SplitContainer splitContainer;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hideUnknownInstructionsToolStripMenuItem;
     }
 }
 

@@ -51,35 +51,19 @@ namespace _7sCarletSceneEditor
                     _instruction.ContentChanged -= OnInstructionChanged;
                 value.ContentChanged += OnInstructionChanged;
                 _instruction = value;
-                OnInstructionChanged(value, EventArgs.Empty);
+                OnInstructionChanged(value);
             }
         }
 
         public event Action<string> TextChanged;
         public event Action<byte[]> DataChanged;
 
-        private void OnInstructionChanged(object sender, EventArgs args)
+        private void OnInstructionChanged(Instruction sender)
         {
             if (_instruction is ITextRepresentable tr)
                 TextChanged?.Invoke(tr.Text);
             if (_instruction is IBinaryRepresentable br)
                 DataChanged?.Invoke(br.Data);
         }
-
-        /*
-        public void SetText(string text)
-        {
-            if (_instruction is ITextRepresentable tr)
-                tr.Text = text;
-            else throw new ArgumentException("Current instruction does not support text data!");
-        }
-
-        public void SetData(byte[] data)
-        {
-            if (_instruction is IBinaryRepresentable br)
-                br.Data = data;
-            else throw new ArgumentException("Current instruction does not support binary data!");
-        }
-        */
     }
 }

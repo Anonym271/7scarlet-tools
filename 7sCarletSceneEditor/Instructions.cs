@@ -1,7 +1,5 @@
-﻿
-
-using System;
-using System.Text;
+﻿using System;
+using System.IO;
 
 namespace _7sCarletSceneEditor
 {
@@ -21,13 +19,15 @@ namespace _7sCarletSceneEditor
         public virtual string Name => this.GetType().Name;
         public virtual string ContentType => "None";
 
-        public event EventHandler ContentChanged;
-        protected void OnContentChanged(EventArgs args) => ContentChanged?.Invoke(this, args);
+        public event Action<Instruction> ContentChanged;
+        protected void OnContentChanged() => ContentChanged?.Invoke(this);
 
         public Instruction(short opcode)
         {
             this.Opcode = opcode;
         }
+
+        public abstract void Write(BinaryWriter file);
     }
 
     public class BinaryInstruction : Instruction, IBinaryRepresentable
@@ -39,7 +39,7 @@ namespace _7sCarletSceneEditor
             set
             {
                 _data = value;
-                OnContentChanged(EventArgs.Empty);
+                OnContentChanged();
             }
         }
         public override string ContentType => "Binary";
@@ -48,6 +48,13 @@ namespace _7sCarletSceneEditor
             base(opcode)
         {
             _data = data;
+        }
+
+        public override void Write(BinaryWriter file)
+        {
+            file.Write((short)(_data.Length + 4));
+            file.Write(Opcode);
+            file.Write(_data);
         }
     }
 
@@ -60,7 +67,7 @@ namespace _7sCarletSceneEditor
             set
             {
                 _text = value;
-                OnContentChanged(EventArgs.Empty);
+                OnContentChanged();
             }
         }
        // public override string DisplayName => base.DisplayName + " (Text)";
@@ -71,7 +78,7 @@ namespace _7sCarletSceneEditor
             set
             {
                 Text = Utility.DefaultEncoding.GetString(value);
-                OnContentChanged(EventArgs.Empty);
+                OnContentChanged();
             }
         }
 
@@ -79,6 +86,14 @@ namespace _7sCarletSceneEditor
             base(opcode)
         {
             _text = text;
+        }
+
+        public override void Write(BinaryWriter file)
+        {
+            byte[] data = Data; 
+            file.Write((short)(data.Length + 4));
+            file.Write(Opcode);
+            file.Write(data);
         }
     }
 
@@ -90,6 +105,15 @@ namespace _7sCarletSceneEditor
             base(opcode, text)
         {
             ID = id;
+        }
+
+        public override void Write(BinaryWriter file)
+        {
+            byte[] data = Data;
+            file.Write((short)(data.Length + 8));
+            file.Write(Opcode);
+            file.Write(ID);
+            file.Write(data);
         }
     }
 }

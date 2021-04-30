@@ -60,6 +60,16 @@ namespace _7sCarletSceneEditor
             }
         }
 
+        public void Save(string filename)
+        {
+            using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+            using (BinaryWriter file = new BinaryWriter(fs))
+            {
+                foreach (Instruction i in Instructions)
+                    i.Write(file);
+            }
+        }
+
         public IEnumerator<Instruction> GetEnumerator()
         {
             return Instructions.GetEnumerator();
