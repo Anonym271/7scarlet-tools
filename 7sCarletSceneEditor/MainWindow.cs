@@ -85,12 +85,24 @@ namespace _7sCarletSceneEditor
             if (CurrentScenario == null)
                 throw new ArgumentNullException("No scenario is loaded!");
             List<JsonDialogInstruction> objects = new List<JsonDialogInstruction>();
+            string lastSpeaker = null;
+            string voiceFile = null;
             foreach (var inst in CurrentScenario)
             {
                 if (inst is DialogTextInstruction d)
-                    objects.Add(new JsonDialogInstruction(d));
+                {
+                    objects.Add(new JsonDialogInstruction(d, lastSpeaker, voiceFile));
+                    voiceFile = null; // reset because each text is only associated to 1 voice file
+                }
+                else if (inst is VoiceFileInstruction v)
+                    voiceFile = v.Text;
+                else if (inst is SpeakerNameInstruction s)
+                    lastSpeaker = s.Text;
             }
-            File.WriteAllText(filename, JsonConvert.SerializeObject(objects.ToArray(), Newtonsoft.Json.Formatting.Indented));
+            File.WriteAllText(filename, JsonConvert.SerializeObject(
+                objects.ToArray(), 
+                Newtonsoft.Json.Formatting.Indented,
+                new Newtonsoft.Json.JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }));
         }
 
         private void ImportDialogs(string filename)
@@ -238,7 +250,8 @@ namespace _7sCarletSceneEditor
             if ( _skipSelectionChanged || listView.SelectedIndices.Count == 0)
                 return;
 
-            if (listView.Items[listView.SelectedIndices[0]] is InstructionListViewItem item)
+            int index = listView.SelectedIndices[0];
+            if (listView.Items[index] is InstructionListViewItem item)
             {
                 CurrentInstruction = item.Instruction;
                 DataSource.Instruction = item.Instruction;
@@ -246,10 +259,24 @@ namespace _7sCarletSceneEditor
                 try
                 {
                     tabView.TabPages.Clear();
-                    if (item.Instruction is TextInstruction inst)
+                    StringBuilder status = new StringBuilder();
+                    status.Append($"0x{item.Instruction.Opcode:X4} | {item.Instruction.Name}");
+                    
+                    if (item.Instruction is ITextRepresentable instT)
                         tabView.TabPages.Add(tabViewString);
                     if (item.Instruction is IBinaryRepresentable instB)
                         tabView.TabPages.Add(tabViewHex);
+                    if (item.Instruction is DialogTextInstruction instD)
+                    {
+                        var str = CurrentScenario.GetSpeaker(index);
+                        if (!string.IsNullOrEmpty(str))
+                            status.Append(" | Speaker: ").Append(str);
+                        str = CurrentScenario.GetVoiceFile(index);
+                        if (!string.IsNullOrEmpty(str))
+                            status.Append(" | Voice File: ").Append(str);
+                    }
+
+                    statusLabel.Text = status.ToString();
                 }
                 catch (Exception exc)
                 {

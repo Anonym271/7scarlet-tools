@@ -70,7 +70,7 @@ namespace _7sCarletSceneEditor
                 OnContentChanged();
             }
         }
-       // public override string DisplayName => base.DisplayName + " (Text)";
+
         public override string ContentType => "Text";
         public byte[] Data
         {
@@ -91,17 +91,19 @@ namespace _7sCarletSceneEditor
         public override void Write(BinaryWriter file)
         {
             byte[] data = Data; 
-            file.Write((short)(data.Length + 4));
+            file.Write((short)(data.Length + 5));
             file.Write(Opcode);
             file.Write(data);
+            file.Write((byte)0); // some of them require null termination
         }
     }
 
-    public class DialogTextInstruction : TextInstruction
+    public class TextInstructionWithID : TextInstruction
     {
         public int ID { get; set; }
-        public override string Name => "DialogText";
-        public DialogTextInstruction(short opcode, int id, string text) :
+        public override string Name => "TextInstructionWithID";
+
+        public TextInstructionWithID(short opcode, int id, string text) :
             base(opcode, text)
         {
             ID = id;
@@ -110,10 +112,38 @@ namespace _7sCarletSceneEditor
         public override void Write(BinaryWriter file)
         {
             byte[] data = Data;
-            file.Write((short)(data.Length + 8));
+            file.Write((short)(data.Length + 9));
             file.Write(Opcode);
             file.Write(ID);
             file.Write(data);
+            file.Write((byte)0); // some of them require null termination
         }
+    }
+
+    public class DialogTextInstruction : TextInstructionWithID
+    {
+        public override string Name => "DialogText";
+
+        public DialogTextInstruction(short opcode, int id, string text) :
+            base(opcode, id, text)
+        {}
+    }
+
+    public class SpeakerNameInstruction : TextInstructionWithID
+    {
+        public override string Name => "SpeakerName";
+
+        public SpeakerNameInstruction(short opcode, int id, string text) :
+            base(opcode, id, text)
+        { }
+    }
+
+    public class VoiceFileInstruction : TextInstructionWithID
+    {
+        public override string Name => "VoiceFile";
+
+        public VoiceFileInstruction(short opcode, int id, string text) :
+            base(opcode, id, text)
+        { }
     }
 }

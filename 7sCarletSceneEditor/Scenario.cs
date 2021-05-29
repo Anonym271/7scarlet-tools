@@ -47,7 +47,19 @@ namespace _7sCarletSceneEditor
                             inst = new DialogTextInstruction(
                                 opcode,
                                 BitConverter.ToInt32(data, 0),
-                                Utility.DefaultEncoding.GetString(data, 4, data.Length - 4));
+                                Utility.GetStringWithoutZeros(data, 4, data.Length - 4));
+                            break;
+                        case 0x0018:
+                            inst = new SpeakerNameInstruction(
+                                opcode,
+                                BitConverter.ToInt32(data, 0),
+                                Utility.GetStringWithoutZeros(data, 4, data.Length - 4));
+                            break;
+                        case 0x0024:
+                            inst = new VoiceFileInstruction(
+                                opcode,
+                                BitConverter.ToInt32(data, 0),
+                                Utility.GetStringWithoutZeros(data, 4, data.Length - 4));
                             break;
                         default:
                             inst = new BinaryInstruction(opcode, data);
@@ -78,6 +90,30 @@ namespace _7sCarletSceneEditor
         IEnumerator IEnumerable.GetEnumerator()
         {
             return Instructions.GetEnumerator();
+        }
+
+        public string GetSpeaker(int dialogInstructionIndex)
+        {
+            for (int i = dialogInstructionIndex - 1; i > 0; i--)
+            {
+                var inst = Instructions[i];
+                if (inst is SpeakerNameInstruction speaker)
+                    return speaker.Text;
+            }
+            return null;
+        }
+
+        public string GetVoiceFile(int dialogInstructionIndex)
+        {
+            for (int i = dialogInstructionIndex - 1; i > 0; i--)
+            {
+                var inst = Instructions[i];
+                if (inst is VoiceFileInstruction voice)
+                    return voice.Text;
+                else if (inst is DialogTextInstruction dialog)
+                    return null; // only one text per voice file
+            }
+            return null;
         }
     }
 }

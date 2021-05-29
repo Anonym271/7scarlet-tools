@@ -37,6 +37,8 @@ namespace _7sCarletSceneEditor
             this.scriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnScriptExport = new System.Windows.Forms.ToolStripMenuItem();
             this.btnScriptImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideUnknownInstructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hexBox = new Be.Windows.Forms.HexBox();
             this.tabView = new System.Windows.Forms.TabControl();
             this.tabViewString = new System.Windows.Forms.TabPage();
@@ -46,8 +48,8 @@ namespace _7sCarletSceneEditor
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideUnknownInstructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.tabView.SuspendLayout();
             this.tabViewHex.SuspendLayout();
@@ -55,6 +57,7 @@ namespace _7sCarletSceneEditor
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -112,16 +115,31 @@ namespace _7sCarletSceneEditor
             // btnScriptExport
             // 
             this.btnScriptExport.Name = "btnScriptExport";
-            this.btnScriptExport.Size = new System.Drawing.Size(196, 22);
+            this.btnScriptExport.Size = new System.Drawing.Size(119, 22);
             this.btnScriptExport.Text = "Export...";
             this.btnScriptExport.Click += new System.EventHandler(this.btnScriptExport_Click);
             // 
             // btnScriptImport
             // 
             this.btnScriptImport.Name = "btnScriptImport";
-            this.btnScriptImport.Size = new System.Drawing.Size(196, 22);
+            this.btnScriptImport.Size = new System.Drawing.Size(119, 22);
             this.btnScriptImport.Text = "Import...";
             this.btnScriptImport.Click += new System.EventHandler(this.btnScriptImport_Click);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hideUnknownInstructionsToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // hideUnknownInstructionsToolStripMenuItem
+            // 
+            this.hideUnknownInstructionsToolStripMenuItem.Name = "hideUnknownInstructionsToolStripMenuItem";
+            this.hideUnknownInstructionsToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.hideUnknownInstructionsToolStripMenuItem.Text = "Hide Unknown Instructions";
+            this.hideUnknownInstructionsToolStripMenuItem.Click += new System.EventHandler(this.hideUnknownInstructionsToolStripMenuItem_Click);
             // 
             // hexBox
             // 
@@ -132,7 +150,7 @@ namespace _7sCarletSceneEditor
             this.hexBox.Location = new System.Drawing.Point(3, 3);
             this.hexBox.Name = "hexBox";
             this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hexBox.Size = new System.Drawing.Size(700, 524);
+            this.hexBox.Size = new System.Drawing.Size(700, 511);
             this.hexBox.StringViewVisible = true;
             this.hexBox.TabIndex = 2;
             this.hexBox.UseFixedBytesPerLine = true;
@@ -145,7 +163,7 @@ namespace _7sCarletSceneEditor
             this.tabView.Location = new System.Drawing.Point(0, 0);
             this.tabView.Name = "tabView";
             this.tabView.SelectedIndex = 0;
-            this.tabView.Size = new System.Drawing.Size(714, 556);
+            this.tabView.Size = new System.Drawing.Size(714, 543);
             this.tabView.TabIndex = 3;
             // 
             // tabViewString
@@ -153,7 +171,7 @@ namespace _7sCarletSceneEditor
             this.tabViewString.Location = new System.Drawing.Point(4, 22);
             this.tabViewString.Name = "tabViewString";
             this.tabViewString.Padding = new System.Windows.Forms.Padding(3);
-            this.tabViewString.Size = new System.Drawing.Size(706, 530);
+            this.tabViewString.Size = new System.Drawing.Size(706, 517);
             this.tabViewString.TabIndex = 0;
             this.tabViewString.Text = "Text";
             this.tabViewString.UseVisualStyleBackColor = true;
@@ -164,7 +182,7 @@ namespace _7sCarletSceneEditor
             this.tabViewHex.Location = new System.Drawing.Point(4, 22);
             this.tabViewHex.Name = "tabViewHex";
             this.tabViewHex.Padding = new System.Windows.Forms.Padding(3);
-            this.tabViewHex.Size = new System.Drawing.Size(706, 530);
+            this.tabViewHex.Size = new System.Drawing.Size(706, 517);
             this.tabViewHex.TabIndex = 1;
             this.tabViewHex.Text = "HEX";
             this.tabViewHex.UseVisualStyleBackColor = true;
@@ -180,8 +198,9 @@ namespace _7sCarletSceneEditor
             this.listView.HideSelection = false;
             this.listView.LabelWrap = false;
             this.listView.Location = new System.Drawing.Point(0, 0);
+            this.listView.MultiSelect = false;
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(254, 556);
+            this.listView.Size = new System.Drawing.Size(254, 543);
             this.listView.TabIndex = 4;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
@@ -218,31 +237,32 @@ namespace _7sCarletSceneEditor
             // 
             this.splitContainer.Panel2.Controls.Add(this.tabView);
             this.splitContainer.Panel2MinSize = 100;
-            this.splitContainer.Size = new System.Drawing.Size(972, 556);
+            this.splitContainer.Size = new System.Drawing.Size(972, 543);
             this.splitContainer.SplitterDistance = 254;
             this.splitContainer.TabIndex = 5;
             this.splitContainer.TabStop = false;
             // 
-            // viewToolStripMenuItem
+            // statusStrip
             // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hideUnknownInstructionsToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 573);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(996, 22);
+            this.statusStrip.TabIndex = 6;
+            this.statusStrip.Text = "statusStrip1";
             // 
-            // hideUnknownInstructionsToolStripMenuItem
+            // statusLabel
             // 
-            this.hideUnknownInstructionsToolStripMenuItem.Name = "hideUnknownInstructionsToolStripMenuItem";
-            this.hideUnknownInstructionsToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
-            this.hideUnknownInstructionsToolStripMenuItem.Text = "Hide Unknown Instructions";
-            this.hideUnknownInstructionsToolStripMenuItem.Click += new System.EventHandler(this.hideUnknownInstructionsToolStripMenuItem_Click);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 595);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
@@ -260,6 +280,8 @@ namespace _7sCarletSceneEditor
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,6 +308,8 @@ namespace _7sCarletSceneEditor
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideUnknownInstructionsToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
     }
 }
 
