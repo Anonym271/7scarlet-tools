@@ -34,7 +34,7 @@ namespace _7sCarletSceneEditor
             {
                 List<Instruction> instructions = new List<Instruction>();
 
-                while (file.PeekChar() > 0)
+                while (file.BaseStream.Position < file.BaseStream.Length)
                 {
                     short length = file.ReadInt16();
                     short opcode = file.ReadInt16();
